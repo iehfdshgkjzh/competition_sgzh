@@ -260,7 +260,7 @@ let cachedRows = [];
 function loadData() {
   const user = getUser();
     setTimeout(() => {
-      fetch(`../../data/numbers/${user.name}.json`)
+      fetch(`./data/numbers/${user.name}.json`)
         .then(res => res.json())
         .then(json => {
           renderTable(json);
@@ -335,5 +335,3 @@ function updateAllProgress() {
   updateProgress('.fill-medium', countByRange(cachedRows, 14, 20), 60);
   updateProgress('.fill-low', countByRange(cachedRows, 1, 13), 43);
 }
-
-
