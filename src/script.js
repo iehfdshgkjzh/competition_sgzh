@@ -260,7 +260,7 @@ let cachedRows = [];
 function loadData() {
   const user = getUser();
     setTimeout(() => {
-      fetch(`./data/numbers/${user.name}.json`)
+      fetch(`../../data/numbers/${user.name}.json`)
         .then(res => res.json())
         .then(json => {
           renderTable(json);
