@@ -1,0 +1,866 @@
+/* ---------- 全局重置与基础 ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  background: linear-gradient(145deg, #f7f9fc 0%, #e9eef4 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- 应用容器 ---------- */
+.app {
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+}
+
+/* ---------- 页面切换 ---------- */
+.page {
+  display: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.page.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- 卡片基础 ---------- */
+.card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 2rem;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+  padding: 2.5rem 2rem;
+  transition: all 0.3s ease;
+}
+
+/* ---------- 徽章 ---------- */
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #5b6f82;
+  background: #eef3f9;
+  padding: 0.35rem 0.9rem;
+  border-radius: 60px;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+/* ---------- 渐变色文字 ---------- */
+.gradient-text {
+  background: linear-gradient(135deg, #1e2b3c, #3b5a7a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- 首页卡片 ---------- */
+.home-card h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: #1e2b3c;
+  margin-bottom: 1rem;
+}
+
+.description {
+  font-size: 1rem;
+  color: #5b6f82;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  font-weight: 400;
+}
+
+/* ---------- 按钮组 ---------- */
+.auth-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* ---------- 主按钮 ---------- */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.85rem 1.8rem;
+  border-radius: 60px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1);
+  background: #1e2b3c;
+  color: #fff;
+  box-shadow: 0 10px 20px -8px rgba(30, 43, 60, 0.45);
+  letter-spacing: 0.02em;
+  min-width: 130px;
+}
+
+.btn-primary:hover {
+  background: #2c3e50;
+  transform: translateY(-2px);
+  box-shadow: 0 16px 24px -10px rgba(30, 43, 60, 0.55);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary .arrow {
+  transition: transform 0.25s ease;
+  font-size: 1.1rem;
+}
+
+.btn-primary:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* ---------- 次按钮 ---------- */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #cfdbe8;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.85rem 1.8rem;
+  border-radius: 60px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1);
+  background: #fff;
+  color: #1e2b3c;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  letter-spacing: 0.02em;
+  min-width: 130px;
+}
+
+.btn-secondary:hover {
+  background: #f4f8ff;
+  border-color: #a0b8cf;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px -6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+/* ---------- 分割线 ---------- */
+.subtle-line {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #dbe3ec 20%, #dbe3ec 80%, transparent);
+  margin: 2rem 0 1.25rem;
+}
+
+/* ---------- 首页底部 ---------- */
+.home-footer,
+.profile-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.dot-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  color: #7d94ab;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+.dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #b0c4d8;
+}
+
+.version {
+  font-size: 0.75rem;
+  color: #9fb1c4;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- 登录/创建卡片 ---------- */
+.login-card {
+  text-align: left;
+}
+
+.login-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1e2b3c;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.35rem;
+}
+
+.login-sub {
+  font-size: 0.95rem;
+  color: #6c8299;
+  margin-bottom: 2rem;
+}
+
+/* ---------- 输入组 ---------- */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.25rem;
+}
+
+.input-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #3f5569;
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.02em;
+}
+
+.input-group input {
+  padding: 0.85rem 1.2rem;
+  border-radius: 16px;
+  border: 1.5px solid #dbe3ec;
+  background: #fff;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #1e2b3c;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.input-group input::placeholder {
+  color: #a8bccf;
+}
+
+.input-group input:focus {
+  border-color: #1e2b3c;
+  box-shadow: 0 0 0 4px rgba(30, 43, 60, 0.08);
+}
+
+/* ---------- 个人页 ---------- */
+.profile-card {
+  padding: 2rem 1.75rem;
+}
+
+.profile-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.profile-welcome {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1e2b3c;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.profile-sub {
+  font-size: 0.9rem;
+  color: #6c8299;
+  margin-top: 0.3rem;
+}
+
+/* ---------- 登出按钮 ---------- */
+.btn-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1.5px solid #e0e8f0;
+  background: #fff;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #5b6f82;
+  padding: 0.5rem 1rem;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-logout:hover {
+  background: #fef2f2;
+  border-color: #f5c6c6;
+  color: #c0392b;
+}
+
+.logout-icon {
+  font-size: 0.9rem;
+  transition: transform 0.2s ease;
+}
+
+.btn-logout:hover .logout-icon {
+  transform: translate(2px, -2px);
+}
+
+/* ---------- 统计网格 ---------- */
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.profile-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 1rem 0.5rem;
+  background: #f7fafd;
+  border-radius: 1.2rem;
+  border: 1px solid #e8eff6;
+  transition: all 0.2s ease;
+}
+
+.profile-item:hover {
+  background: #eef4fb;
+  border-color: #d0dfed;
+  transform: translateY(-2px);
+}
+
+.profile-icon {
+  font-size: 1.3rem;
+}
+
+.profile-label {
+  font-size: 0.75rem;
+  color: #7d94ab;
+  font-weight: 500;
+}
+
+.profile-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e2b3c;
+}
+
+/* ---------- 上传入口 ---------- */
+.upload-entry {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, #1e2b3c 0%, #2c3e50 100%);
+  border-radius: 1.4rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+  margin-bottom: 1.75rem;
+  box-shadow: 0 12px 24px -10px rgba(30, 43, 60, 0.4);
+}
+
+.upload-entry:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 30px -12px rgba(30, 43, 60, 0.5);
+}
+
+.upload-entry-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.upload-entry-text {
+  flex: 1;
+}
+
+.upload-entry-text h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.15rem;
+}
+
+.upload-entry-text p {
+  font-size: 0.8rem;
+  color: #a8c0d8;
+  font-weight: 400;
+}
+
+.upload-entry-arrow {
+  font-size: 1.2rem;
+  color: #8aa8c8;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.upload-entry:hover .upload-entry-arrow {
+  transform: translateX(5px);
+  color: #fff;
+}
+
+/* ---------- 活动列表 ---------- */
+.activity-section {
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1e2b3c;
+  margin-bottom: 0.9rem;
+  letter-spacing: 0.01em;
+}
+
+.activity-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #eef3f9;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3b5a7a;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(59, 90, 122, 0.12);
+}
+
+.activity-text {
+  flex: 1;
+  font-size: 0.88rem;
+  color: #3f5569;
+  font-weight: 500;
+}
+
+.activity-time {
+  font-size: 0.75rem;
+  color: #9fb1c4;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 520px) {
+  body {
+    padding: 1rem;
+    align-items: flex-start;
+  }
+
+  .card {
+    padding: 2rem 1.5rem;
+    border-radius: 1.5rem;
+  }
+
+  .home-card h1 {
+    font-size: 1.9rem;
+  }
+
+  .login-title {
+    font-size: 1.5rem;
+  }
+
+  .auth-actions {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .profile-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .profile-title {
+    font-size: 1.35rem;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn-logout {
+    align-self: flex-start;
+  }
+
+  .upload-entry {
+    padding: 1rem 1.2rem;
+  }
+
+  .upload-entry-text h3 {
+    font-size: 0.92rem;
+  }
+
+  .activity-item {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .activity-time {
+    margin-left: auto;
+  }
+}
+
+/* ---------- 任务列表容器 ---------- */
+.table-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+/* ---------- 头部 ---------- */
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #eef3f9;
+}
+
+.table-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.table-header .count {
+  font-size: 0.85rem;
+  color: #7d94ab;
+  font-weight: 500;
+  background: #f0f4fa;
+  padding: 0.3rem 0.9rem;
+  border-radius: 40px;
+}
+
+/* ---------- 表格滚动区 ---------- */
+.table-scroll {
+  overflow-x: auto;
+}
+
+/* ---------- 表格 ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+thead {
+  background: #f7fafd;
+  position: sticky;
+  top: 0;
+}
+
+th {
+  text-align: left;
+  padding: 0.9rem 1.25rem;
+  font-weight: 600;
+  color: #3f5569;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border-bottom: 1.5px solid #e8eff6;
+}
+
+td {
+  padding: 0.9rem 1.25rem;
+  color: #2c3e50;
+  border-bottom: 1px solid #eef3f9;
+  white-space: nowrap;
+}
+
+tbody tr {
+  transition: background 0.15s ease;
+}
+
+tbody tr:hover {
+  background: #f4f8ff;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ---------- 状态标签 ---------- */
+.status {
+  display: inline-block;
+  padding: 0.25rem 0.7rem;
+  border-radius: 40px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.status-active {
+  background: #e6f7ec;
+  color: #1e7e45;
+}
+
+.status-inactive {
+  background: #fdeaea;
+  color: #c0392b;
+}
+
+.status-pending {
+  background: #fff4e0;
+  color: #b26a00;
+}
+
+/* ---------- 加载与空状态 ---------- */
+.state {
+  padding: 3rem 2rem;
+  text-align: center;
+  color: #7d94ab;
+  font-size: 0.95rem;
+}
+
+.state .spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #e2eaf2;
+  border-top-color: #1e2b3c;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 600px) {
+  body {
+    padding: 1rem;
+  }
+
+  .table-header {
+    padding: 1.2rem 1.25rem;
+  }
+
+  th,
+  td {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* ---------- 卡片容器 ---------- */
+.progress-card {
+  width: 100%;
+  max-width: 460px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 1.75rem;
+  padding: 2rem 1.75rem;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+}
+
+/* ---------- 卡片头部 ---------- */
+.progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+
+.progress-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.progress-total {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1e7e45;
+  background: #e6f7ec;
+  padding: 0.3rem 0.85rem;
+  border-radius: 40px;
+}
+
+/* ---------- 单个进度项 ---------- */
+.progress-item {
+  margin-bottom: 1.5rem;
+}
+
+.progress-item:last-child {
+  margin-bottom: 0;
+}
+
+.progress-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+/* ---------- 标签区 ---------- */
+.progress-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.progress-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.icon-design {
+  background: #f3e8ff;
+}
+
+.icon-dev {
+  background: #e0f0ff;
+}
+
+.icon-test {
+  background: #e6f7ec;
+}
+
+/* ---------- 已完成 / 总数 ---------- */
+.progress-fraction {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #7d94ab;
+  font-variant-numeric: tabular-nums;
+}
+
+.progress-fraction .done {
+  color: #1e2b3c;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.progress-fraction .separator {
+  margin: 0 0.15rem;
+  color: #b0c4d8;
+}
+
+/* ---------- 进度条轨道 ---------- */
+.progress-track {
+  width: 100%;
+  height: 10px;
+  background: #eef3f9;
+  border-radius: 40px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ---------- 进度填充 ---------- */
+.progress-fill {
+  height: 100%;
+  border-radius: 40px;
+  transition: width 0.6s cubic-bezier(0.2, 0.9, 0.4, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 填充内部的高光流动效果 */
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* 各分类渐变色 */
+.fill-senior {
+  background: linear-gradient(90deg, #ffc814, #ffd342);
+}
+
+.fill-medium {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+}
+
+.fill-low {
+  background: linear-gradient(90deg, #22c55e, #4ade80);
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 420px) {
+  .progress-card {
+    padding: 1.5rem 1.25rem;
+    border-radius: 1.25rem;
+  }
+
+  .progress-header h2 {
+    font-size: 1.1rem;
+  }
+}

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>简约 · 个人空间</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 全局容器 -->
+  <div class="app">
+
+    <!-- ========= 首页（未登录） ========= -->
+    <section id="homePage" class="page active">
+      <div class="card home-card">
+        <span class="badge">✨ 简约 · 精致</span>
+
+        <h1>
+          <span class="gradient-text">欢迎回来，</span><br>
+          开启你的空间。
+        </h1>
+
+        <p class="description">
+          一个干净、优雅的个人空间。无需繁复，只留呼吸感与温度。
+        </p>
+
+        <div class="auth-actions">
+          <button class="btn-primary" id="loginBtn">
+            <span>登 录</span>
+            <span class="arrow">→</span>
+          </button>
+          <button class="btn-secondary" id="createBtn">
+            创建账号
+          </button>
+        </div>
+
+        <div class="subtle-line"></div>
+
+        <div class="home-footer">
+          <div class="dot-divider">
+            <span>简洁</span>
+            <span class="dot"></span>
+            <span>美观</span>
+            <span class="dot"></span>
+            <span>舒适</span>
+          </div>
+          <span class="version">v1.1</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========= 登录页（输入用户信息） ========= -->
+    <section id="loginPage" class="page">
+      <div class="card login-card">
+        <span class="badge" style="margin-bottom: 1.5rem;">🔐 身份验证</span>
+
+        <h2 class="login-title">登录你的空间</h2>
+        <p class="login-sub">输入任意姓名即可进入</p>
+
+        <div class="input-group">
+          <label for="loginName">姓名</label>
+          <input type="text" id="loginName" placeholder="例如：旅行者" autocomplete="off">
+        </div>
+
+        <div class="auth-actions" style="margin-top: 0.5rem;">
+          <button class="btn-primary" id="enterBtn">
+            <span>进入</span>
+            <span class="arrow">→</span>
+          </button>
+          <button class="btn-secondary" id="backFromLogin">返回</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========= 创建账号页 ========= -->
+    <section id="createPage" class="page">
+      <div class="card login-card">
+        <span class="badge" style="margin-bottom: 1.5rem;">🌱 新用户</span>
+
+        <h2 class="login-title">创建账号</h2>
+        <p class="login-sub">填写信息，开启你的空间</p>
+
+        <div class="input-group">
+          <label for="createName">姓名 *</label>
+          <input type="text" id="createName" placeholder="你的名字" autocomplete="off">
+        </div>
+
+        <div class="input-group">
+          <label for="createEmail">邮箱</label>
+          <input type="email" id="createEmail" placeholder="hello@example.com" autocomplete="off">
+        </div>
+
+        <div class="input-group">
+          <label for="createOrg">组织</label>
+          <input type="text" id="createOrg" placeholder="例如：创新科技" autocomplete="off">
+        </div>
+
+        <div class="auth-actions" style="margin-top: 0.5rem;">
+          <button class="btn-primary" id="createSubmitBtn">
+            <span>创建并进入</span>
+            <span class="arrow">→</span>
+          </button>
+          <button class="btn-secondary" id="backFromCreate">返回</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========= 个人页（已登录） ========= -->
+    <section id="profilePage" class="page">
+      <div class="card profile-card">
+        <div class="profile-header">
+          <div class="profile-welcome">
+            <span class="badge" style="margin-bottom: 0.25rem;">👤 个人空间</span>
+            <h2 class="profile-title">
+              你好，<span class="gradient-text" id="userNameDisplay">旅行者</span>
+            </h2>
+          </div>
+          <button class="btn-logout" id="logoutBtn" title="退出登录">
+            <span>登出</span>
+            <span class="logout-icon">↗</span>
+          </button>
+        </div>
+
+        <div class="profile-grid">
+          <div class="profile-item">
+            <span class="profile-label">个人数据</span>
+          </div>
+        </div>
+
+        <div class="progress-card">
+          <div class="progress-header">
+            <h2>总览</h2>
+          </div>
+
+          <!-- 分类 1：高级任务 -->
+          <div class="progress-item">
+            <div class="progress-item-header">
+              <span class="progress-label">
+                高级任务（大于等于21积分）
+              </span>
+              <span class="progress-fraction">
+                <span class="done">8</span>
+                <span class="separator">/</span>
+                <span class="total">619</span>
+              </span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill fill-senior" style="width: 66.7%"></div>
+            </div>
+          </div>
+
+          <!-- 分类 2：中级任务 -->
+          <div class="progress-item">
+            <div class="progress-item-header">
+              <span class="progress-label">
+                中级任务（大于等于14积分）
+              </span>
+              <span class="progress-fraction">
+                <span class="done">15</span>
+                <span class="separator">/</span>
+                <span class="total">60</span>
+              </span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill fill-medium" style="width: 75%"></div>
+            </div>
+          </div>
+
+          <!-- 分类 3：其他任务 -->
+          <div class="progress-item">
+            <div class="progress-item-header">
+              <span class="progress-label">
+                其他任务
+              </span>
+              <span class="progress-fraction">
+                <span class="done">3</span>
+                <span class="separator">/</span>
+                <span class="total">43</span>
+              </span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill fill-low" style="width: 30%"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="table-container">
+          <div class="table-header">
+            <h2>任务列表</h2>
+            <span class="count" id="rowCount">加载中…</span>
+          </div>
+          <div class="table-scroll">
+            <div id="tableRoot">
+              <div class="state">
+                <div class="spinner"></div>
+                <p>正在加载数据…</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subtle-line"></div>
+        <div class="profile-footer">
+          <span class="version">已登录</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
