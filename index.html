@@ -55,7 +55,7 @@
         <span class="badge" style="margin-bottom: 1.5rem;">🔐 身份验证</span>
 
         <h2 class="login-title">登录你的空间</h2>
-        <p class="login-sub">输入任意姓名即可进入</p>
+        <p class="login-sub">输入共享表格中填写的姓名即可进入</p>
 
         <div class="input-group">
           <label for="loginName">姓名</label>
@@ -70,6 +70,20 @@
           <button class="btn-secondary" id="backFromLogin">返回</button>
         </div>
       </div>
+
+      <!-- Loading 遮罩弹窗 -->
+      <div id="loadingMask" class="loading-mask">
+        <div class="loading-box">
+          <div class="spinner"></div>
+          <p id="loadingText">获取数据中…</p>
+        </div>
+      </div>
+
+      <!-- 错误提示 Toast -->
+      <div id="errorToast" class="toast">
+        <span class="toast-icon">⚠️</span>
+        <span class="toast-message">加载失败，请重试</span>
+      </div>
     </section>
 
     <!-- ========= 创建账号页 ========= -->
@@ -83,16 +97,6 @@
         <div class="input-group">
           <label for="createName">姓名 *</label>
           <input type="text" id="createName" placeholder="你的名字" autocomplete="off">
-        </div>
-
-        <div class="input-group">
-          <label for="createEmail">邮箱</label>
-          <input type="email" id="createEmail" placeholder="hello@example.com" autocomplete="off">
-        </div>
-
-        <div class="input-group">
-          <label for="createOrg">组织</label>
-          <input type="text" id="createOrg" placeholder="例如：创新科技" autocomplete="off">
         </div>
 
         <div class="auth-actions" style="margin-top: 0.5rem;">

@@ -7,7 +7,7 @@ const STORAGE_KEY = 'simple_space_user';
 
 /**
  * 获取已保存的用户数据
- * @returns {{ name: string, email?: string, org?: string } | null}
+ * @returns {{ name: string, tasks: Array } | null}
  */
 function getUser() {
   try {
@@ -30,6 +30,80 @@ function saveUser(user) {
  */
 function clearUser() {
   localStorage.removeItem(STORAGE_KEY);
+}
+
+/**
+ * 加载用户任务数据（异步，返回 json）
+ * @returns {Promise<Object|null>} 成功返回 json，失败返回 null
+ */
+async function loadData() {
+  const user = getUser();
+
+  // 1. 显示 loading
+  showLoading('获取数据中…');
+
+  try {
+    const res = await fetch(`../data/numbers/${user.name}.json`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const json = await res.json();
+
+    // 2. 渲染 + 保存
+    renderTable(json);
+    user.tasks = json.data || [];
+    saveUser(user);
+    updateAllProgress();
+
+    return json;
+  } catch (err) {
+    console.error('加载失败：', err);
+    // 3. 弹窗提示错误
+    showErrorToast('加载失败，请重试');
+    // 表格区显示占位
+    const root = document.getElementById('tableRoot');
+    if (root) root.innerHTML = '<div class="state">加载失败，请重试</div>';
+    const countEl = document.getElementById('rowCount');
+    if (countEl) countEl.textContent = '—';
+
+    return null;
+  } finally {
+    // 4. 无论成功失败，关闭 loading
+    hideLoading();
+  }
+}
+
+// ---------- Loading 控制 ----------
+function showLoading(text = '获取数据中…') {
+  const mask = document.getElementById('loadingMask');
+  if (!mask) return;
+  const p = document.getElementById('loadingText');
+  if (p) p.textContent = text;
+  mask.classList.add('show');
+}
+
+function hideLoading() {
+  const mask = document.getElementById('loadingMask');
+  if (!mask) return;
+  mask.classList.remove('show');
+}
+
+// ---------- 错误提示 Toast ----------
+function showErrorToast(message = '加载失败，请重试') {
+  const toast = document.getElementById('errorToast');
+  if (!toast) {
+    alert(message);
+    return;
+  }
+  const msgEl = toast.querySelector('.toast-message');
+  if (msgEl) msgEl.textContent = message;
+
+  toast.classList.add('show');
+
+  // 3 秒后自动隐藏
+  clearTimeout(showErrorToast._timer);
+  showErrorToast._timer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
 }
 
 // ---------- 页面切换 ----------
@@ -55,6 +129,7 @@ function showPage(pageName) {
   }
 }
 
+
 // ---------- 首页 ----------
 document.getElementById('loginBtn')?.addEventListener('click', () => {
   // 如果已有用户，直接进入个人页；否则去登录页
@@ -73,11 +148,7 @@ document.getElementById('loginBtn')?.addEventListener('click', () => {
 document.getElementById('createBtn')?.addEventListener('click', () => {
   // 清空创建表单
   const createName = document.getElementById('createName');
-  const createEmail = document.getElementById('createEmail');
-  const createOrg = document.getElementById('createOrg');
   if (createName) createName.value = '';
-  if (createEmail) createEmail.value = '';
-  if (createOrg) createOrg.value = '';
   showPage('create');
 });
 
@@ -99,17 +170,18 @@ document.getElementById('enterBtn')?.addEventListener('click', () => {
     return;
   }
 
-  // 尝试保留已存在的邮箱和组织信息
+  // 尝试保留已存在的任务信息
   const existing = getUser() || {};
   const user = {
     name,
-    email: existing.email || '',
-    org: existing.org || '',
+    tasks: existing.tasks || [],
   };
 
   saveUser(user);
   renderProfile(user);
   showPage('profile');
+
+  loadData();
 });
 
 document.getElementById('backFromLogin')?.addEventListener('click', () => {
@@ -125,50 +197,47 @@ document.getElementById('loginName')?.addEventListener('keydown', (e) => {
 });
 
 // ---------- 创建页 ----------
-document.getElementById('createSubmitBtn')?.addEventListener('click', () => {
-  const nameInput = document.getElementById('createName');
-  const name = nameInput?.value.trim();
+// document.getElementById('createSubmitBtn')?.addEventListener('click', () => {
+//   const nameInput = document.getElementById('createName');
+//   const name = nameInput?.value.trim();
 
-  if (!name) {
-    if (nameInput) {
-      nameInput.focus();
-      nameInput.style.borderColor = '#e74c3c';
-      nameInput.style.boxShadow = '0 0 0 4px rgba(231, 76, 60, 0.1)';
-      setTimeout(() => {
-        nameInput.style.borderColor = '';
-        nameInput.style.boxShadow = '';
-      }, 1500);
-    }
-    return;
-  }
+//   if (!name) {
+//     if (nameInput) {
+//       nameInput.focus();
+//       nameInput.style.borderColor = '#e74c3c';
+//       nameInput.style.boxShadow = '0 0 0 4px rgba(231, 76, 60, 0.1)';
+//       setTimeout(() => {
+//         nameInput.style.borderColor = '';
+//         nameInput.style.boxShadow = '';
+//       }, 1500);
+//     }
+//     return;
+//   }
 
-  const email = document.getElementById('createEmail')?.value.trim() || '';
-  const org = document.getElementById('createOrg')?.value.trim() || '';
-
-  const user = { name, email, org };
-  saveUser(user);
-  renderProfile(user);
-  showPage('profile');
-});
+//   const user = { name, email, org };
+//   saveUser(user);
+//   renderProfile(user);
+//   showPage('profile');
+// });
 
 document.getElementById('backFromCreate')?.addEventListener('click', () => {
   showPage('home');
 });
 
 // 创建表单支持回车
-['createName', 'createEmail', 'createOrg'].forEach((id) => {
-  document.getElementById(id)?.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      document.getElementById('createSubmitBtn')?.click();
-    }
-  });
-});
+// ['createName', 'createEmail', 'createOrg'].forEach((id) => {
+//   document.getElementById(id)?.addEventListener('keydown', (e) => {
+//     if (e.key === 'Enter') {
+//       e.preventDefault();
+//       document.getElementById('createSubmitBtn')?.click();
+//     }
+//   });
+// });
 
 // ---------- 个人页 ----------
 /**
  * 渲染个人页数据
- * @param {{ name: string, email?: string, org?: string }} user
+ * @param {{ name: string, tasks: Array }} user
  */
 function renderProfile(user) {
   const nameDisplay = document.getElementById('userNameDisplay');
@@ -180,6 +249,7 @@ function renderProfile(user) {
 document.getElementById('logoutBtn')?.addEventListener('click', () => {
   clearUser();
   showPage('home');
+  console.log(user);
 });
 
 // ---------- 1. 列配置 ----------
@@ -254,31 +324,8 @@ function renderTable(data) {
   countEl.textContent = `共 ${rows.length} 条`;
 }
 
-// ---------- 6. 加载数据 ----------
-let cachedRows = [];
-
-function loadData() {
-  const user = getUser();
-    setTimeout(() => {
-      fetch(`./data/numbers/${user.name}.json`)
-        .then(res => res.json())
-        .then(json => {
-          renderTable(json);
-          cachedRows = json.data || [];
-          updateAllProgress();
-        })
-        .catch((err) => {
-          document.getElementById('tableRoot').innerHTML =
-            '<div class="state">加载失败，请重试</div>';
-          document.getElementById('rowCount').textContent = '—';
-          console.error(err);
-        });
-      }, 600);
-}
-
 // ---------- 7. 启动 ----------
-document.addEventListener('DOMContentLoaded', loadData);
-
+// document.addEventListener('DOMContentLoaded', loadData);
 
 // ---------- 初始化 ----------
 function init() {
@@ -331,7 +378,8 @@ function countByRange(data, begin, end) {
 }
 
 function updateAllProgress() {
-  updateProgress('.fill-senior', countByRange(cachedRows, 21, 100), 619);
-  updateProgress('.fill-medium', countByRange(cachedRows, 14, 20), 60);
-  updateProgress('.fill-low', countByRange(cachedRows, 1, 13), 43);
+  const user = getUser();
+  updateProgress('.fill-senior', countByRange(user.tasks, 21, 100), 619);
+  updateProgress('.fill-medium', countByRange(user.tasks, 14, 20), 60);
+  updateProgress('.fill-low', countByRange(user.tasks, 1, 13), 43);
 }
