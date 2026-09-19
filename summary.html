@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>竞标赛汇总</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <section class="page active">
+      <div class="summary-header">
+        <h2 class="login-title">竞标赛汇总</h2>
+        <p class="login-sub" id="updatedAt"></p>
+      </div>
+
+      <div id="summaryRoot" class="summary-grid">
+        <div class="state">加载中…</div>
+      </div>
+
+      <div class="auth-actions" style="margin-top: 1rem;">
+        <button class="btn-secondary" id="backFromSummary">返回</button>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="./summary.js"></script>
+</body>
+</html>

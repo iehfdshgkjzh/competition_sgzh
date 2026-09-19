@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>简约 · 个人空间</title>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <!-- 全局容器 -->
   <div class="app">
@@ -30,7 +33,7 @@
             <span class="arrow">→</span>
           </button>
           <button class="btn-secondary" id="createBtn">
-            创建账号
+            更新数据
           </button>
         </div>
 
@@ -86,29 +89,6 @@
       </div>
     </section>
 
-    <!-- ========= 创建账号页 ========= -->
-    <section id="createPage" class="page">
-      <div class="card login-card">
-        <span class="badge" style="margin-bottom: 1.5rem;">🌱 新用户</span>
-
-        <h2 class="login-title">创建账号</h2>
-        <p class="login-sub">填写信息，开启你的空间</p>
-
-        <div class="input-group">
-          <label for="createName">姓名 *</label>
-          <input type="text" id="createName" placeholder="你的名字" autocomplete="off">
-        </div>
-
-        <div class="auth-actions" style="margin-top: 0.5rem;">
-          <button class="btn-primary" id="createSubmitBtn">
-            <span>创建并进入</span>
-            <span class="arrow">→</span>
-          </button>
-          <button class="btn-secondary" id="backFromCreate">返回</button>
-        </div>
-      </div>
-    </section>
-
     <!-- ========= 个人页（已登录） ========= -->
     <section id="profilePage" class="page">
       <div class="card profile-card">
@@ -127,7 +107,9 @@
 
         <div class="profile-grid">
           <div class="profile-item">
-            <span class="profile-label">个人数据</span>
+            <button class="btn-secondary" id="summaryBtn">
+              查看汇总
+            </button>
           </div>
         </div>
 
@@ -215,4 +197,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>

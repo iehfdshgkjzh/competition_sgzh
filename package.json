@@ -1,0 +1,32 @@
+{
+  "name": "competition_sgzh",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "dev:cf": "wrangler pages dev",
+    "deploy": "wrangler pages deploy ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iehfdshgkjzh/competition_sgzh.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iehfdshgkjzh/competition_sgzh/issues"
+  },
+  "homepage": "https://github.com/iehfdshgkjzh/competition_sgzh#readme",
+  "devDependencies": {
+    "vite": "^5.4.0",
+    "wrangler": "^3.80.0"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  }
+}

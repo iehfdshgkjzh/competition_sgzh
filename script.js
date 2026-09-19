@@ -3,7 +3,7 @@
    ============================================================ */
 
 // ---------- 状态管理 ----------
-const STORAGE_KEY = 'simple_space_user';
+const STORAGE_KEY = "simple_space_user";
 
 /**
  * 获取已保存的用户数据
@@ -39,14 +39,28 @@ function clearUser() {
 async function loadData() {
   const user = getUser();
 
+  // 0. 没有登录信息，直接提示
+  if (!user || !user.name) {
+    showErrorToast("请先输入名字");
+    const root = document.getElementById("tableRoot");
+    if (root) root.innerHTML = '<div class="state">请先输入名字</div>';
+    const countEl = document.getElementById("rowCount");
+    if (countEl) countEl.textContent = "—";
+    return null;
+  }
+
   // 1. 显示 loading
-  showLoading('获取数据中…');
+  showLoading("获取数据中…");
 
   try {
-    const res = await fetch(`../data/numbers/${user.name}.json`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
+    // 关键：从后端 API 读，而不是本地 JSON 文件
+    const res = await fetch("/api/user?id=" + encodeURIComponent(user.name));
     const json = await res.json();
+
+    if (!res.ok) {
+      // 后端返回的错误 JSON 里通常有 error 字段
+      throw new Error(json.error || `HTTP ${res.status}`);
+    }
 
     // 2. 渲染 + 保存
     renderTable(json);
@@ -56,14 +70,14 @@ async function loadData() {
 
     return json;
   } catch (err) {
-    console.error('加载失败：', err);
+    console.error("加载失败：", err);
     // 3. 弹窗提示错误
-    showErrorToast('加载失败，请重试');
+    showErrorToast(err.message || "加载失败，请重试");
     // 表格区显示占位
-    const root = document.getElementById('tableRoot');
+    const root = document.getElementById("tableRoot");
     if (root) root.innerHTML = '<div class="state">加载失败，请重试</div>';
-    const countEl = document.getElementById('rowCount');
-    if (countEl) countEl.textContent = '—';
+    const countEl = document.getElementById("rowCount");
+    if (countEl) countEl.textContent = "—";
 
     return null;
   } finally {
@@ -73,45 +87,45 @@ async function loadData() {
 }
 
 // ---------- Loading 控制 ----------
-function showLoading(text = '获取数据中…') {
-  const mask = document.getElementById('loadingMask');
+function showLoading(text = "获取数据中…") {
+  const mask = document.getElementById("loadingMask");
   if (!mask) return;
-  const p = document.getElementById('loadingText');
+  const p = document.getElementById("loadingText");
   if (p) p.textContent = text;
-  mask.classList.add('show');
+  mask.classList.add("show");
 }
 
 function hideLoading() {
-  const mask = document.getElementById('loadingMask');
+  const mask = document.getElementById("loadingMask");
   if (!mask) return;
-  mask.classList.remove('show');
+  mask.classList.remove("show");
 }
 
 // ---------- 错误提示 Toast ----------
-function showErrorToast(message = '加载失败，请重试') {
-  const toast = document.getElementById('errorToast');
+function showErrorToast(message = "加载失败，请重试") {
+  const toast = document.getElementById("errorToast");
   if (!toast) {
     alert(message);
     return;
   }
-  const msgEl = toast.querySelector('.toast-message');
+  const msgEl = toast.querySelector(".toast-message");
   if (msgEl) msgEl.textContent = message;
 
-  toast.classList.add('show');
+  toast.classList.add("show");
 
   // 3 秒后自动隐藏
   clearTimeout(showErrorToast._timer);
   showErrorToast._timer = setTimeout(() => {
-    toast.classList.remove('show');
+    toast.classList.remove("show");
   }, 3000);
 }
 
 // ---------- 页面切换 ----------
 const pages = {
-  home: document.getElementById('homePage'),
-  login: document.getElementById('loginPage'),
-  create: document.getElementById('createPage'),
-  profile: document.getElementById('profilePage'),
+  home: document.getElementById("homePage"),
+  login: document.getElementById("loginPage"),
+  create: document.getElementById("createPage"),
+  profile: document.getElementById("profilePage"),
 };
 
 /**
@@ -120,51 +134,50 @@ const pages = {
  */
 function showPage(pageName) {
   Object.values(pages).forEach((page) => {
-    if (page) page.classList.remove('active');
+    if (page) page.classList.remove("active");
   });
 
   const target = pages[pageName];
   if (target) {
-    target.classList.add('active');
+    target.classList.add("active");
   }
 }
 
-
 // ---------- 首页 ----------
-document.getElementById('loginBtn')?.addEventListener('click', () => {
+document.getElementById("loginBtn")?.addEventListener("click", () => {
   // 如果已有用户，直接进入个人页；否则去登录页
   const user = getUser();
   if (user) {
     renderProfile(user);
-    showPage('profile');
+    showPage("profile");
   } else {
     // 清空登录输入，方便重新输入
-    const loginNameInput = document.getElementById('loginName');
-    if (loginNameInput) loginNameInput.value = '';
-    showPage('login');
+    const loginNameInput = document.getElementById("loginName");
+    if (loginNameInput) loginNameInput.value = "";
+    showPage("login");
   }
 });
 
-document.getElementById('createBtn')?.addEventListener('click', () => {
+document.getElementById("createBtn")?.addEventListener("click", () => {
   // 清空创建表单
-  const createName = document.getElementById('createName');
-  if (createName) createName.value = '';
-  showPage('create');
+  const createName = document.getElementById("createName");
+  if (createName) createName.value = "";
+  showPage("create");
 });
 
 // ---------- 登录页 ----------
-document.getElementById('enterBtn')?.addEventListener('click', () => {
-  const nameInput = document.getElementById('loginName');
+document.getElementById("enterBtn")?.addEventListener("click", () => {
+  const nameInput = document.getElementById("loginName");
   const name = nameInput?.value.trim();
 
   if (!name) {
     if (nameInput) {
       nameInput.focus();
-      nameInput.style.borderColor = '#e74c3c';
-      nameInput.style.boxShadow = '0 0 0 4px rgba(231, 76, 60, 0.1)';
+      nameInput.style.borderColor = "#e74c3c";
+      nameInput.style.boxShadow = "0 0 0 4px rgba(231, 76, 60, 0.1)";
       setTimeout(() => {
-        nameInput.style.borderColor = '';
-        nameInput.style.boxShadow = '';
+        nameInput.style.borderColor = "";
+        nameInput.style.boxShadow = "";
       }, 1500);
     }
     return;
@@ -179,60 +192,31 @@ document.getElementById('enterBtn')?.addEventListener('click', () => {
 
   saveUser(user);
   renderProfile(user);
-  showPage('profile');
+  showPage("profile");
 
   loadData();
 });
 
-document.getElementById('backFromLogin')?.addEventListener('click', () => {
-  showPage('home');
+document.getElementById("backFromLogin")?.addEventListener("click", () => {
+  showPage("home");
 });
 
 // 登录输入框支持回车
-document.getElementById('loginName')?.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
+document.getElementById("loginName")?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
     e.preventDefault();
-    document.getElementById('enterBtn')?.click();
+    document.getElementById("enterBtn")?.click();
   }
 });
 
-// ---------- 创建页 ----------
-// document.getElementById('createSubmitBtn')?.addEventListener('click', () => {
-//   const nameInput = document.getElementById('createName');
-//   const name = nameInput?.value.trim();
-
-//   if (!name) {
-//     if (nameInput) {
-//       nameInput.focus();
-//       nameInput.style.borderColor = '#e74c3c';
-//       nameInput.style.boxShadow = '0 0 0 4px rgba(231, 76, 60, 0.1)';
-//       setTimeout(() => {
-//         nameInput.style.borderColor = '';
-//         nameInput.style.boxShadow = '';
-//       }, 1500);
-//     }
-//     return;
-//   }
-
-//   const user = { name, email, org };
-//   saveUser(user);
-//   renderProfile(user);
-//   showPage('profile');
-// });
-
-document.getElementById('backFromCreate')?.addEventListener('click', () => {
-  showPage('home');
+// ---------- 上传数据页 ----------
+document.getElementById("createBtn")?.addEventListener("click", () => {
+  location.href = "/upload.html";
 });
 
-// 创建表单支持回车
-// ['createName', 'createEmail', 'createOrg'].forEach((id) => {
-//   document.getElementById(id)?.addEventListener('keydown', (e) => {
-//     if (e.key === 'Enter') {
-//       e.preventDefault();
-//       document.getElementById('createSubmitBtn')?.click();
-//     }
-//   });
-// });
+document.getElementById("backFromCreate")?.addEventListener("click", () => {
+  showPage("home");
+});
 
 // ---------- 个人页 ----------
 /**
@@ -240,44 +224,44 @@ document.getElementById('backFromCreate')?.addEventListener('click', () => {
  * @param {{ name: string, tasks: Array }} user
  */
 function renderProfile(user) {
-  const nameDisplay = document.getElementById('userNameDisplay');
+  const nameDisplay = document.getElementById("userNameDisplay");
   if (nameDisplay) {
-    nameDisplay.textContent = user.name || '旅行者';
+    nameDisplay.textContent = user.name || "旅行者";
   }
 }
 
-document.getElementById('logoutBtn')?.addEventListener('click', () => {
+document.getElementById("logoutBtn")?.addEventListener("click", () => {
   clearUser();
-  showPage('home');
+  showPage("home");
   console.log(user);
 });
 
 // ---------- 1. 列配置 ----------
 const columns = [
-  { key: 'value', label: '内容', width: '120px' },
-  { key: 'score', label: '分值', width: '80px' },
+  { key: "value", label: "内容", width: "120px" },
+  { key: "score", label: "分值", width: "80px" },
 ];
 
 // ---------- 2. 自定义渲染：状态标签 ----------
 function renderStatus(value) {
   const map = {
-    active: { text: '正常', cls: 'status-active' },
-    inactive: { text: '停用', cls: 'status-inactive' },
-    pending: { text: '待审核', cls: 'status-pending' },
+    active: { text: "正常", cls: "status-active" },
+    inactive: { text: "停用", cls: "status-inactive" },
+    pending: { text: "待审核", cls: "status-pending" },
   };
-  const info = map[value] || { text: value, cls: '' };
+  const info = map[value] || { text: value, cls: "" };
   return `<span class="status ${info.cls}">${info.text}</span>`;
 }
 
 // ---------- 3. 安全转义 HTML ----------
 function escapeHtml(str) {
-  if (str === null || str === undefined) return '';
+  if (str === null || str === undefined) return "";
   return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 // ---------- 4. 核心：生成表格 HTML ----------
@@ -289,7 +273,7 @@ function buildTable(rows, cols) {
   const thead = `
     <thead>
       <tr>
-        ${cols.map((c) => `<th style="min-width:${c.width || 'auto'}">${escapeHtml(c.label)}</th>`).join('')}
+        ${cols.map((c) => `<th style="min-width:${c.width || "auto"}">${escapeHtml(c.label)}</th>`).join("")}
       </tr>
     </thead>
   `;
@@ -301,13 +285,16 @@ function buildTable(rows, cols) {
           const tds = cols
             .map((c) => {
               const raw = row[c.key];
-              const content = typeof c.render === 'function' ? c.render(raw, row) : escapeHtml(raw);
+              const content =
+                typeof c.render === "function"
+                  ? c.render(raw, row)
+                  : escapeHtml(raw);
               return `<td>${content}</td>`;
             })
-            .join('');
+            .join("");
           return `<tr>${tds}</tr>`;
         })
-        .join('')}
+        .join("")}
     </tbody>
   `;
 
@@ -316,8 +303,8 @@ function buildTable(rows, cols) {
 
 // ---------- 5. 渲染入口 ----------
 function renderTable(data) {
-  const root = document.getElementById('tableRoot');
-  const countEl = document.getElementById('rowCount');
+  const root = document.getElementById("tableRoot");
+  const countEl = document.getElementById("rowCount");
   const rows = data?.data || [];
 
   root.innerHTML = buildTable(rows, columns);
@@ -334,14 +321,15 @@ function init() {
   // 如果已登录，进入个人页；否则停留在首页
   if (user) {
     renderProfile(user);
-    showPage('profile');
+    showPage("profile");
+    loadData();
   } else {
-    showPage('home');
+    showPage("home");
   }
 }
 
 // DOM 加载完成后初始化
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener("DOMContentLoaded", init);
 
 /**
  * 用法一：根据数据动态设置某个分类的进度
@@ -357,10 +345,10 @@ function updateProgress(fillSelector, done, total) {
   if (fill) fill.style.width = `${percent.toFixed(1)}%`;
 
   // 更新分数显示
-  const item = fill?.closest('.progress-item');
+  const item = fill?.closest(".progress-item");
   if (item) {
-    const doneEl = item.querySelector('.progress-fraction .done');
-    const totalEl = item.querySelector('.progress-fraction .total');
+    const doneEl = item.querySelector(".progress-fraction .done");
+    const totalEl = item.querySelector(".progress-fraction .total");
     if (doneEl) doneEl.textContent = done;
     if (totalEl) totalEl.textContent = total;
   }
@@ -379,7 +367,12 @@ function countByRange(data, begin, end) {
 
 function updateAllProgress() {
   const user = getUser();
-  updateProgress('.fill-senior', countByRange(user.tasks, 21, 100), 619);
-  updateProgress('.fill-medium', countByRange(user.tasks, 14, 20), 60);
-  updateProgress('.fill-low', countByRange(user.tasks, 1, 13), 43);
+  updateProgress(".fill-senior", countByRange(user.tasks, 21, 100), 619);
+  updateProgress(".fill-medium", countByRange(user.tasks, 14, 20), 60);
+  updateProgress(".fill-low", countByRange(user.tasks, 1, 13), 43);
 }
+
+// ---------- 跳转到汇总页 ----------
+document.getElementById("summaryBtn")?.addEventListener("click", () => {
+  location.href = "/summary.html";
+});

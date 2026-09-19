@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>数据上传</title>
+
+    <!-- xlsx 必须在 admin.js 之前加载（挂到 window.XLSX） -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- 全局容器 -->
+    <div class="app">
+        <section id="loadPage" class="page active">
+            <div class="card login-card">
+                <h2 class="login-title">竞标赛数据上传</h2>
+                <p class="login-sub"></p>
+
+                <div class="input-group">
+                    <label for="upload-file">上传 Excel *</label>
+                    <label class="file-input-box" for="upload-file">
+                        <span id="upload-file-name">点击选择 .xlsx 文件</span>
+                        <span class="file-icon">📎</span>
+                    </label>
+                    <input type="file" id="upload-file" accept=".xlsx" hidden>
+                </div>
+
+                <div class="auth-actions" style="margin-top: 0.5rem;">
+                    <button class="btn-primary" id="uploadSubmitBtn">
+                        <span>解析并上传</span>
+                        <span class="arrow">→</span>
+                    </button>
+                    <button class="btn-secondary" id="backFromCreate">返回</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- 模块脚本，负责绑定事件 -->
+    <script type="module" src="./upload.js"></script>
+</body>
+
+</html>

@@ -978,3 +978,124 @@ tbody tr:last-child td {
     transform: translate(0, 0);
   }
 }
+
+/* ===== 自定义文件选择框，模仿姓名输入框 ===== */
+.file-input-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 0.75rem 1rem;        /* 和姓名输入框保持一致 */
+    border: 1px solid #d0d5dd;    /* 灰色边框 */
+    border-radius: 10px;          /* 圆角，和输入框一致 */
+
+    background: #fff;
+    color: #667085;               /* 提示文字灰色 */
+    font-size: 1rem;
+
+    cursor: pointer;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+.file-input-box:hover {
+    border-color: #98a2b3;
+}
+
+/* 如果里面有已选文件名（有 has-file 类），文字变深色 */
+.file-input-box.has-file {
+    color: #101828;
+}
+
+.file-icon {
+    font-size: 1.1rem;
+    color: #98a2b3;
+}
+
+/* ===== 汇总页 ===== */
+.summary-header {
+  margin-bottom: 1.5rem;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.player-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.2rem 1rem 1rem;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+
+.player-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .06);
+  border-color: #d1d5db;
+}
+
+.player-rank {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.9rem;
+  font-size: 0.85rem;
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+.player-rank.rank-1 { color: #d4af37; }
+.player-rank.rank-2 { color: #9ca3af; }
+.player-rank.rank-3 { color: #cd7f32; }
+
+.player-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.9rem;
+  word-break: break-word;
+}
+
+.top-task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.top-task-value {
+  font-size: 0.85rem;
+  color: #374151;
+  line-height: 1.35;
+  flex: 1;
+  margin-right: 0.5rem;
+  word-break: break-word;
+}
+
+.top-task-score {
+  color: #e67e22;
+  font-weight: bold;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.top-task-empty {
+  color: #9ca3af;
+  font-size: 0.85rem;
+  padding: 0.6rem 0;
+  margin-bottom: 0.75rem;
+}
+
+.player-meta {
+  font-size: 0.78rem;
+  color: #9ca3af;
+}

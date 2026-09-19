@@ -1,0 +1,8 @@
+name = "competition-sgzh"
+pages_build_output_dir = "."
+compatibility_date = "2025-01-01"
+
+[[kv_namespaces]]
+binding = "MY_KV"
+id = "f743e2944020450dbd534a733c717c70"
+preview_id = "f743e2944020450dbd534a733c717c70"
